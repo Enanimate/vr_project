@@ -1,0 +1,16 @@
+{
+   "jsonid" : "input_profile",
+   "controller_type": "custom_controller",
+   "device_class" : "TrackedDeviceClass_Controller",
+   "legacy_binding" : "{custom_vr}/input/legacy_bindings_custom_controller.json",
+   "input_bindingui_mode" : "controller_handed",
+   "should_show_binding_errors" : true,
+   "input_source": {
+      "/input/application_menu": {
+         "type": "button",
+         "click": true,
+         "binding_image_point": [64, 35],
+         "order": 1
+      }
+   }
+}

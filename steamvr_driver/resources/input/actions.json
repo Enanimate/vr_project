@@ -1,0 +1,26 @@
+{
+   "default_bindings": [
+      {
+         "controller_type": "custom_controller",
+         "binding_url": "custom_controller_default.json"
+      }
+   ],
+   "actions": [
+      {
+         "name": "/actions/main/in/menu",
+         "type": "boolean"
+      }
+   ],
+   "action_sets": [
+      {
+         "name": "/actions/main",
+         "usage": "leftright"
+      }
+   ],
+   "localization": [
+      {
+         "language_tag": "en_US",
+         "/actions/main/in/menu": "Menu Button (Y key)"
+      }
+   ]
+}

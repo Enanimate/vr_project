@@ -1,0 +1,9 @@
+{
+    "alwaysActivate": true,
+    "name": "custom_vr_driver",
+    "directory": "",
+    "resourceOnly": false,
+    "hmd_presence": [
+        "*"
+    ]
+}

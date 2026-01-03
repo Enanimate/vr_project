@@ -1,0 +1,51 @@
+{
+   "bindings": {
+      "/actions/system": [
+         {
+            "output": "/actions/system/in/recentersystem",
+            "inputs": {
+               "click": {
+                  "output": "/actions/system/in/recentersystem"
+               }
+            },
+            "mode": "button",
+            "path": "/user/hand/left/input/system"
+         }
+      ],
+      "/actions/main": [
+         {
+            "output": "/actions/main/in/opendashboard",
+            "inputs": {
+               "click": {
+                  "output": "/actions/main/in/opendashboard"
+               }
+            },
+            "mode": "button",
+            "path": "/user/hand/left/input/application_menu"
+         },
+         {
+            "output": "/actions/main/in/grabgrip",
+            "inputs": {
+               "click": {
+                  "output": "/actions/main/in/grabgrip"
+               }
+            },
+            "mode": "button",
+            "path": "/user/hand/left/input/grip"
+         },
+         {
+            "output": "/actions/main/in/select",
+            "inputs": {
+               "click": {
+                  "output": "/actions/main/in/select"
+               }
+            },
+            "mode": "button",
+            "path": "/user/hand/left/input/trigger"
+         }
+      ]
+   },
+   "controller_type": "custom_controller",
+   "description": "Custom VR Controller Default Bindings",
+   "name": "Custom Controller Default Bindings"
+}
