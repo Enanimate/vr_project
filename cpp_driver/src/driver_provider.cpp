@@ -22,10 +22,10 @@ EVRInitError DriverProvider::Init(IVRDriverContext* pDriverContext)
 {
     VR_INIT_SERVER_DRIVER_CONTEXT(pDriverContext);
 
-    // Create Rust Device (connect to COM4)
-    m_pRustDevice = vr_device_create("COM4");
+    // Create Rust Device (connect to COM5 for headset, COM3 for tracking)
+    m_pRustDevice = vr_device_create("COM5", "COM3");
     if (!m_pRustDevice) {
-        printf("Failed to create Rust device (COM4)!\n");
+        printf("Failed to create Rust device (COM5)!\n");
         return VRInitError_Init_InterfaceNotFound;
     }
 

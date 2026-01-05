@@ -3,7 +3,8 @@
     "allow": [
       "Bash(cp:*)",
       "Bash(ls:*)",
-      "Bash(tail:*)"
+      "Bash(tail:*)",
+      "Bash(cargo build:*)"
     ]
   }
 }

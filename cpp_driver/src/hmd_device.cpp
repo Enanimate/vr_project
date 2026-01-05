@@ -105,9 +105,13 @@ DriverPose_t HMDDevice::GetPose()
         return pose;
     }
 
-    // Get quaternion from Rust (which got it from Arduino)
+    // Get quaternion from Rust
     Quaternion quat;
     vr_device_get_pose(m_pRustDevice, &quat);
+
+    // Get position from Rust 
+    Vec3 position;
+    vr_device_get_position(m_pRustDevice, &position);
 
     // Check if device is connected
     bool connected = vr_device_is_connected(m_pRustDevice);
@@ -123,10 +127,10 @@ DriverPose_t HMDDevice::GetPose()
     pose.qRotation.y = quat.y;
     pose.qRotation.z = quat.z;
 
-    // Position (fixed at origin for 3DOF)
-    pose.vecPosition[0] = 0.0;
-    pose.vecPosition[1] = 0.0;
-    pose.vecPosition[2] = 0.0;
+    // Position from IR camera tracking
+    pose.vecPosition[0] = position.x;
+    pose.vecPosition[1] = position.y;
+    pose.vecPosition[2] = position.z;
 
     // Coordinate system transforms (identity = no transform)
     pose.qWorldFromDriverRotation.w = 1.0;

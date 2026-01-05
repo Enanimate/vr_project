@@ -1,0 +1,73 @@
+{
+  "description": "LED constellation configuration for 6DOF positional tracking",
+  "units": "meters",
+  "coordinate_system": {
+    "origin": "Center of headset (between eyes)",
+    "x_axis": "Left (-) to Right (+)",
+    "y_axis": "Down (-) to Up (+)",
+    "z_axis": "Back (-) to Front (+)"
+  },
+  "leds": [
+    {
+      "id": 0,
+      "position": {
+        "x": -0.036504,
+        "y": -0.034564,
+        "z": 0.02111
+      },
+      "power_level": "low",
+      "description": "Front lower-left",
+      "expected_blob_size": "6-9"
+    },
+    {
+      "id": 1,
+      "position": {
+        "x": -0.036504,
+        "y": 0.034564,
+        "z": 0.02111
+      },
+      "power_level": "low",
+      "description": "Front lower-right",
+      "expected_blob_size": "6-9"
+    },
+    {
+      "id": 2,
+      "position": {
+        "x": -0.030208,
+        "y": 0.048627,
+        "z": -0.0325
+      },
+      "power_level": "high",
+      "description": "Side/back right",
+      "expected_blob_size": "12-15"
+    },
+    {
+      "id": 3,
+      "position": {
+        "x": -0.030208,
+        "y": -0.048627,
+        "z": -0.0325
+      },
+      "power_level": "high",
+      "description": "Side/back left",
+      "expected_blob_size": "12-15"
+    },
+    {
+      "id": 4,
+      "position": {
+        "x": -0.0505,
+        "y": 0.0,
+        "z": 0.0325
+      },
+      "power_level": "high",
+      "description": "Front center-top",
+      "expected_blob_size": "12-15"
+    }
+  ],
+  "notes": [
+    "Wiimote camera can track up to 4 blobs simultaneously",
+    "High power LEDs prioritized for detection (larger blob size)",
+    "Low power LEDs provide coverage at off-angles",
+    "Non-planar constellation improves pose estimation accuracy"
+  ]
+}
