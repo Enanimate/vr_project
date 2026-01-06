@@ -40,7 +40,7 @@ EVRInitError DriverProvider::Init(IVRDriverContext* pDriverContext)
     );
 
     // Create and add controller
-    m_pControllerDevice = new ControllerDevice();
+    m_pControllerDevice = new ControllerDevice(m_pRustDevice);
     VRServerDriverHost()->TrackedDeviceAdded(
         "virtual_controller_001",
         TrackedDeviceClass_Controller,

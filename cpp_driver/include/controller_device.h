@@ -1,13 +1,14 @@
 #pragma once
 
 #include <openvr_driver.h>
+#include "../../rust_core/src/rust_bridge.h"
 
 namespace vr_driver {
 
 class ControllerDevice : public vr::ITrackedDeviceServerDriver
 {
 public:
-    ControllerDevice();
+    ControllerDevice(VRDevice* pRustDevice);
     virtual ~ControllerDevice();
 
     // ITrackedDeviceServerDriver interface
@@ -21,6 +22,7 @@ public:
     void RunFrame();
 
 private:
+    VRDevice* m_pRustDevice;
     uint32_t m_unObjectId;
     vr::PropertyContainerHandle_t m_ulPropertyContainer;
     vr::VRInputComponentHandle_t m_menuButton;

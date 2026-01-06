@@ -1,0 +1,19 @@
+{
+    "name": "Dev Board Default Bindings",
+    "controller_type": "dev_board",
+    "bindings": {
+    "/actions/main": {
+        "sources": [
+            {
+                "mode": "button",
+                "path": "/input/application_menu",
+                "inputs": {
+                "click": {
+                    "output": "/actions/main/in/menu"
+                }
+                }
+            }
+        ]
+    }
+    }
+}

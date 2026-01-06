@@ -6,11 +6,12 @@ using namespace vr;
 
 namespace vr_driver {
 
-ControllerDevice::ControllerDevice()
+ControllerDevice::ControllerDevice(VRDevice* pRustDevice)
     : m_unObjectId(k_unTrackedDeviceIndexInvalid)
     , m_ulPropertyContainer(k_ulInvalidPropertyContainer)
     , m_menuButton(k_ulInvalidInputComponentHandle)
     , m_menuPressed(false)
+    , m_pRustDevice(pRustDevice)
 {
 }
 
@@ -25,8 +26,8 @@ EVRInitError ControllerDevice::Activate(uint32_t unObjectId)
 
     SetupProperties();
 
-    // Create menu button input component
-    VRDriverInput()->CreateBooleanComponent(m_ulPropertyContainer, "/input/application_menu/click", &m_menuButton);
+    // Create menu button input component (using system button to open dashboard)
+    VRDriverInput()->CreateBooleanComponent(m_ulPropertyContainer, "/input/system/click", &m_menuButton);
 
     printf("Controller menu button initialized\n");
 
@@ -39,10 +40,10 @@ void ControllerDevice::SetupProperties()
     VRProperties()->SetStringProperty(m_ulPropertyContainer, Prop_ManufacturerName_String, "CustomVR");
     VRProperties()->SetStringProperty(m_ulPropertyContainer, Prop_RenderModelName_String, "{htc}vr_tracker_vive_1_0");
 
-    // Controller properties - identify as Vive controller for automatic bindings
+    // Controller properties - set as left hand controller for input binding
     VRProperties()->SetInt32Property(m_ulPropertyContainer, Prop_ControllerRoleHint_Int32, TrackedControllerRole_LeftHand);
-    VRProperties()->SetStringProperty(m_ulPropertyContainer, Prop_InputProfilePath_String, "{htc}/input/vive_controller_profile.json");
-    VRProperties()->SetStringProperty(m_ulPropertyContainer, Prop_ControllerType_String, "vive_controller");
+    VRProperties()->SetStringProperty(m_ulPropertyContainer, Prop_InputProfilePath_String, "{custom_vr_driver}/input/devboard_profile.json");
+    VRProperties()->SetStringProperty(m_ulPropertyContainer, Prop_ControllerType_String, "dev_board");
 
     printf("Virtual controller configured\n");
 }
@@ -93,14 +94,16 @@ void ControllerDevice::RunFrame()
     if (m_unObjectId == k_unTrackedDeviceIndexInvalid)
         return;
 
-    // Y key for menu button
-    bool yKey = (GetAsyncKeyState('Y') & 0x8000) != 0;
+    // Get button state from Rust
+    bool buttonM = vr_device_get_button_m(m_pRustDevice);
 
-    // Update menu button state
-    if (yKey && !m_menuPressed) {
+    // Update button state
+    if (buttonM && !m_menuPressed) {
+        printf("Button PRESSED - updating component to TRUE\n");
         VRDriverInput()->UpdateBooleanComponent(m_menuButton, true, 0);
         m_menuPressed = true;
-    } else if (!yKey && m_menuPressed) {
+    } else if (!buttonM && m_menuPressed) {
+        printf("Button RELEASED - updating component to FALSE\n");
         VRDriverInput()->UpdateBooleanComponent(m_menuButton, false, 0);
         m_menuPressed = false;
     }

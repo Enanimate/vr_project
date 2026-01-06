@@ -1,0 +1,12 @@
+{
+    "jsonid" : "input_profile",
+    "controller_type" : "dev_board",
+    "device_class" : "TrackedDeviceClass_Controller",
+    "input_source" : {
+        "/input/application_menu" : {
+            "type" : "button",
+            "binding_image_point" : [ 10, 59 ],
+            "order" : 1
+        }
+    }
+}

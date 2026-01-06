@@ -26,6 +26,7 @@ struct TrackingData {
     quaternion: Quaternion,
     ir_blobs: Vec<IRBlob>,
     smoothed_position: Vec3,
+    button_m: bool,
     connected: bool,
 }
 
@@ -52,6 +53,8 @@ struct QuaternionJson {
     x: f64,
     y: f64,
     z: f64,
+    #[serde(default)]
+    button_m: bool,
 }
 
 pub struct VRDevice {
@@ -67,6 +70,7 @@ impl VRDevice {
                 quaternion: Quaternion { w: 1.0, x: 0.0, y: 0.0, z: 0.0 },
                 ir_blobs: Vec::new(),
                 smoothed_position: Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                button_m: false,
                 connected: false,
             })),
             headset_thread: None,
@@ -134,6 +138,7 @@ impl VRDevice {
                                 y: quat.y,
                                 z: quat.z,
                             };
+                            data.button_m = quat.button_m;
                         }
                     }
                     Err(e) => {
@@ -203,26 +208,26 @@ impl VRDevice {
         let mut depth_sum = 0.0;
         let mut count = 0;
 
-        for i in 0..ir_blobs.len() {
-            for j in (i+1)..ir_blobs.len() {
-                let pixel_distance = Self::calculate_pixel_distance(&ir_blobs[i], &ir_blobs[j]);
-
-                if pixel_distance < 1.0 {
-                    continue;
-                }
-
+        // Iterate over every blob, and then compare the distance of that blob with another blob
+        // Use that distance to calculate the depth?
+        ir_blobs.iter().enumerate().for_each(|(next, blob_a)| {
+            ir_blobs[next..].iter().for_each(|blob_b| {
+                let pixel_distance = Self::calculate_pixel_distance(blob_a, blob_b);
+                
                 // Average physical distance between LEDs (approximate)
                 // Real distances: 69mm, 97mm, 111mm, etc - average ~85mm
                 const AVG_LED_SPACING: f64 = 0.085;
 
                 const FOCAL_LENGTH: f64 = 1728.0;
+                
+                if pixel_distance >= 1.0 {
+                    // Since the number of pixels is above 0, calculate and add the depth
 
-                // Perspective formula
-                let depth = (AVG_LED_SPACING * FOCAL_LENGTH) / pixel_distance;
-                depth_sum += depth;
-                count += 1;
-            }
-        }
+                    depth_sum += (AVG_LED_SPACING * FOCAL_LENGTH) / pixel_distance;
+                    count += 1;
+                }
+            });
+        });
 
         if count > 0 {
             Some(depth_sum / (count as f64))
@@ -380,6 +385,18 @@ pub extern "C" fn vr_device_get_position(device: *const VRDevice, out_pos: *mut 
         // No position available - return last smoothed position
         *out = data.smoothed_position;
     }
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn vr_device_get_button_m(device: *const VRDevice) -> u8 {
+    if device.is_null() {
+        return 0;
+    }
+
+    let device = unsafe { &*device };
+    let data = device.tracking_data.lock().unwrap();
+
+    if data.button_m { 1 } else { 0 }
 }
 
 #[unsafe(no_mangle)]

@@ -1,8 +1,8 @@
 {
    "default_bindings": [
       {
-         "controller_type": "custom_controller",
-         "binding_url": "custom_controller_default.json"
+         "controller_type": "dev_board",
+         "binding_url": "devboard_default.json"
       }
    ],
    "actions": [
@@ -20,7 +20,7 @@
    "localization": [
       {
          "language_tag": "en_US",
-         "/actions/main/in/menu": "Menu Button (Y key)"
+         "/actions/main/in/menu": "Menu Button"
       }
    ]
 }

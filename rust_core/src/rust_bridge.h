@@ -28,6 +28,7 @@ void vr_device_destroy(VRDevice* device);
 uint8_t vr_device_update(VRDevice* device);
 void vr_device_get_pose(const VRDevice* device, Quaternion* out_quat);
 void vr_device_get_position(const VRDevice* device, Vec3* out_pos);
+uint8_t vr_device_get_button_m(const VRDevice* device);
 uint8_t vr_device_is_connected(const VRDevice* device);
 
 #ifdef __cplusplus
